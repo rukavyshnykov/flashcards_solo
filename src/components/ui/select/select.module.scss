@@ -1,3 +1,8 @@
+.icon svg {
+  display: block;
+  fill: var(--color-light-100);
+}
+
 .trigger {
   display: flex;
   align-items: center;
@@ -68,6 +73,22 @@
       transform: rotate(180deg);
     }
   }
+
+  &[data-disabled] {
+    &:hover {
+      background: transparent;
+      border-color: var(--color-dark-300);
+    }
+
+    &:focus,
+    &:focus-visible {
+      border: inherit;
+    }
+
+    .icon svg {
+      fill: var(--color-dark-300);
+    }
+  }
 }
 
 .content {
@@ -90,8 +111,4 @@
 .item:hover {
   color: var(--color-accent-300);
   background-color: var(--color-accent-900);
-}
-
-.icon svg {
-  display: block;
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { useState } from 'react'
 
-import { SuperSelect } from '@/components/ui/Select/index'
+import { SuperSelect } from '.'
 
 const meta = {
   component: SuperSelect,
@@ -29,7 +29,7 @@ export const Default: Story = {
     options: options,
   },
   render: args => {
-    const [selectedValue, setSelectedValue] = useState<string>(args.options![0].label)
+    const [selectedValue, setSelectedValue] = useState<string>(args.options![0].value)
     const handleSelectChange = (value: string) => {
       setSelectedValue(value)
     }
@@ -45,7 +45,7 @@ export const Disabled: Story = {
     options,
   },
   render: args => {
-    const [selectedValue, setSelectedValue] = useState<string>(args.options![0].label)
+    const [selectedValue, setSelectedValue] = useState<string>(args.options![0].value)
     const handleSelectChange = (value: string) => {
       setSelectedValue(value)
     }

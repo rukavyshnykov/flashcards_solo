@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
-import s from './button.module.scss'
+import c from './Button.module.scss'
 
 export type ButtonProps<T extends ElementType = 'button'> = {
   as?: T
@@ -14,6 +14,9 @@ export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T>) 
   const { as: Component = 'button', className, fullWidth, variant = 'primary', ...rest } = props
 
   return (
-    <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...rest} />
+    <Component
+      className={c.button + ` ${c[variant]} ${fullWidth ? c.fullWidth : ''} ${className}`}
+      {...rest}
+    />
   )
 }
