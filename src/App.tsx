@@ -1,22 +1,25 @@
 import { useState } from 'react'
 
-import { SuperModal } from './components/ui/modal/modal'
-import { SuperSelect } from './components/ui/select/select'
+import { SuperSelect } from './components/ui/Select'
 
 export function App() {
-  // const [open, setOpen] = useState<boolean>(true)
+  const mockOptions = [
+    { label: 'opt1', value: 'opt1' },
+    { label: 'opt2', value: 'opt2' },
+    { label: 'opt3', value: 'opt3' },
+    { label: 'opt4', value: 'opt4' },
+    { label: 'opt5', value: 'opt5' },
+  ]
 
-  // const changeOpen = (open: boolean) => {
-  //   setOpen(!open)
-  // }
+  const [state, setState] = useState(mockOptions[0].value)
+  const handleSelectChange = (value: string) => {
+    setState(value)
+  }
 
   return (
     <>
       <div>Hello</div>
-      <SuperSelect />
-      {/* <SuperModal open={open} setOpen={changeOpen} title={'check'} withSecondary={false}>
-        bla bla
-      </SuperModal> */}
+      <SuperSelect handleSelectChange={handleSelectChange} options={mockOptions} value={state} />
     </>
   )
 }
