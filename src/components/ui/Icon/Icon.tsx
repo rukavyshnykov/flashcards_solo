@@ -1,8 +1,10 @@
+import { ComponentPropsWithoutRef } from 'react'
+
 import Sprite from '@/assets/sprite.svg'
 
-export const Icon = ({ height, iconId, width }: IconProps) => {
+export const Icon = ({ height, iconId, width, ...rest }: PropsType) => {
   return (
-    <svg height={height + 'px'} width={width + 'px'}>
+    <svg height={height + 'px'} width={width + 'px'} {...rest}>
       <use href={`${Sprite}#${iconId}`} />
     </svg>
   )
@@ -13,3 +15,5 @@ type IconProps = {
   iconId: string
   width: number
 }
+
+type PropsType = IconProps & Omit<ComponentPropsWithoutRef<'svg'>, keyof IconProps>
