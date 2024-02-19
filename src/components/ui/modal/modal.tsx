@@ -2,37 +2,50 @@ import { ReactNode } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
-import c from './modal.module.scss'
+import c from './Modal.module.scss'
+
+import { Button } from '../Button'
+import { Icon } from '../Icon/Icon'
+import { Typography } from '../Typography'
 
 type SuperModalProps = {
+  changeModalState: (open: boolean) => void
   children: ReactNode
   open: boolean
-  setOpen: (value: boolean) => void
   title: string
-  withSecondary: boolean
+  withTrigger: boolean
 }
 
-export const SuperModal = ({ children, open, setOpen, title, withSecondary }: SuperModalProps) => (
-  <Dialog.Root onOpenChange={() => setOpen(open)} open={open}>
-    <Dialog.Portal>
-      <Dialog.Overlay />
-      <Dialog.Content>
-        <div className={c.header}>
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Close />
-        </div>
-        <div className={c.content}>{children}</div>
-        {withSecondary ? (
-          <div className={c.footer}>
-            <button>sdfsdf</button>
-            <button>sdfs</button>
+export const SuperModal = ({
+  changeModalState,
+  children,
+  open,
+  title,
+  withTrigger,
+}: SuperModalProps) => {
+  return (
+    <Dialog.Root onOpenChange={() => changeModalState(open)} open={open}>
+      {withTrigger && (
+        <Dialog.Trigger className={c.trigger}>
+          <Button variant={'primary'}>
+            <Typography variant={'h3'}>{title}</Typography>
+          </Button>
+        </Dialog.Trigger>
+      )}
+      <Dialog.Portal>
+        <Dialog.Overlay className={c.overlay} />
+        <Dialog.Content className={c.root}>
+          <div className={c.header}>
+            <Dialog.Title className={c.title}>
+              <Typography variant={'h3'}>{title}</Typography>
+            </Dialog.Title>
+            <Dialog.Close className={c.close}>
+              <Icon height={24} iconId={'close'} width={24} />
+            </Dialog.Close>
           </div>
-        ) : (
-          <div className={c.footer}>
-            <button></button>
-          </div>
-        )}
-      </Dialog.Content>
-    </Dialog.Portal>
-  </Dialog.Root>
-)
+          <div className={c.content}>{children}</div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  )
+}
