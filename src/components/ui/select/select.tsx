@@ -23,7 +23,7 @@ export const SuperSelect = ({
           placeholder={options?.length ? 'Select something...' : 'Nothing to choose here'}
         />
         <Select.Icon className={c.icon}>
-          <Icon height={24} iconId={'close'} width={24} />
+          <Icon height={16} iconId={'chevron'} width={16} />
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
