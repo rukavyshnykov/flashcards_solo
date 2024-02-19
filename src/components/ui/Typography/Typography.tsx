@@ -2,10 +2,6 @@ import { ComponentPropsWithoutRef, ElementType } from 'react'
 
 import c from './Typography.module.scss'
 
-export const Typography = ({ as: Component = 'span', variant, ...rest }: TypographyProps) => {
-  return <Component className={c[variant]} {...rest} />
-}
-
 type TypographyProps<T extends ElementType = 'span'> = {
   as?: T
   variant:
@@ -22,3 +18,9 @@ type TypographyProps<T extends ElementType = 'span'> = {
     | 'subtitle1'
     | 'subtitle2'
 } & ComponentPropsWithoutRef<T>
+
+export const Typography = <T extends ElementType = 'span'>(props: TypographyProps<T>) => {
+  const { as: Component = 'span', variant, ...rest } = props
+
+  return <Component className={c[variant]} {...rest} />
+}
