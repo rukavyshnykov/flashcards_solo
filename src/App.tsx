@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { SuperCheckbox } from './components/ui/Checkbox'
 import { Input } from './components/ui/Input/Input'
 
 export function App() {
@@ -15,6 +16,7 @@ export function App() {
         type={'password'}
         value={value}
       />
+      <SuperCheckbox />
     </>
   )
 }
