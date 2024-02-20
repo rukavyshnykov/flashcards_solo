@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { Input } from './components/ui/Input/Input'
-import { SuperSelect } from './components/ui/Select'
 
 export function App() {
   const [value, setValue] = useState('')
