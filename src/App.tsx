@@ -1,10 +1,10 @@
-import { ForgotPasswordForm } from './components/forms/ForgotPassword'
+import { CreateNewPasswordForm } from './components/forms/CreateNewPassword'
 
 export function App() {
   return (
     <>
       <div>Hello</div>
-      <ForgotPasswordForm />
+      <CreateNewPasswordForm />
     </>
   )
 }
