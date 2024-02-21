@@ -17,5 +17,16 @@ export const ControlledInput = <TFieldValues extends FieldValues>({
     ...useControllerValues,
   })
 
-  return <Input disabled={disabled} name={name} onChange={onChange} ref={ref} value={value} />
+  return (
+    <Input
+      disabled={disabled}
+      errorMessage={errorMessage}
+      label={label}
+      name={name}
+      onChange={onChange}
+      ref={ref}
+      type={type}
+      value={value}
+    />
+  )
 }

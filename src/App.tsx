@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
-import { Card } from '@/components/ui/Card'
-
+import { LoginForm } from './components/forms/Auth'
 import { SuperCheckbox } from './components/ui/Checkbox'
 import { Input } from './components/ui/Input/Input'
 
@@ -19,7 +18,7 @@ export function App() {
         value={value}
       />
       <SuperCheckbox />
-      <Card />
+      <LoginForm />
     </>
   )
 }
