@@ -11,7 +11,6 @@ type FormValues = {
   confirmPassword: string
   email: string
   password: string
-  rememberMe: boolean
 }
 
 export const SignUpForm = () => {
