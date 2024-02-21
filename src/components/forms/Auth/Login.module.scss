@@ -21,7 +21,12 @@
   margin-right: 12px;
   margin-bottom: 66px;
 
+  color: var(--color-light-100);
   text-decoration: unset;
+
+  &:visited {
+    color: inherit;
+  }
 }
 
 .formFooter {
