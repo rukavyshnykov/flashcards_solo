@@ -57,10 +57,12 @@ type InputVisibilityIconProps = {
   iconId: string
 }
 
-type InputProps = {
+export type InputProps = {
   errorMessage?: string
   label?: string
+  onChange: (value: string) => void
   type?: 'password' | 'search' | 'text'
+  value?: string
 }
 
 type PropsType = InputProps & Omit<ComponentPropsWithoutRef<'input'>, keyof InputProps>
