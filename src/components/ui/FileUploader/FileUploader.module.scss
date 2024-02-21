@@ -1,0 +1,15 @@
+.input {
+  display: none;
+}
+
+.fileInputLabel {
+  display: inline-flex;
+
+  &.onlyIcon {
+    padding: 4px;
+
+    svg {
+      display: block;
+    }
+  }
+}
