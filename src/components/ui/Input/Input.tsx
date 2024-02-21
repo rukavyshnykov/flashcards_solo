@@ -60,7 +60,7 @@ type InputVisibilityIconProps = {
 export type InputProps = {
   errorMessage?: string
   label?: string
-  onChange: (value: string) => void
+  onChange: () => void
   type?: 'password' | 'search' | 'text'
   value?: string
 }
