@@ -1,14 +1,10 @@
-import { useState } from 'react'
-
-import { LoginForm } from '@/components/forms/Auth'
-
-import { SignUpForm } from './components/forms/SignUp'
+import { ForgotPasswordForm } from './components/forms/ForgotPassword'
 
 export function App() {
   return (
     <>
       <div>Hello</div>
-      <SignUpForm />
+      <ForgotPasswordForm />
     </>
   )
 }
