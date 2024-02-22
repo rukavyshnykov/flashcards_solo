@@ -5,17 +5,27 @@ import { ControlledInput } from '@/components/controlled/ControlledInput'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 
 import c from './Login.module.scss'
 
-type FormValues = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(3),
+  rememberMe: z.boolean().default(false),
+})
+
+type FormValues = z.infer<typeof loginSchema>
 
 export const LoginForm = () => {
-  const { control, handleSubmit } = useForm<FormValues>()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({
+    resolver: zodResolver(loginSchema),
+  })
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -29,6 +39,7 @@ export const LoginForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.email?.message}
             label={'Email'}
             name={'email'}
             type={'text'}
@@ -36,6 +47,7 @@ export const LoginForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.password?.message}
             label={'Password'}
             name={'password'}
             type={'password'}
