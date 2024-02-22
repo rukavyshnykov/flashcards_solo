@@ -4,17 +4,32 @@ import { ControlledInput } from '@/components/controlled/ControlledInput'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 
 import c from './SignUp.module.scss'
 
-type FormValues = {
-  confirmPassword: string
-  email: string
-  password: string
-}
+const registerSchema = z
+  .object({
+    confirmPassword: z.string().min(3),
+    email: z.string().email(),
+    password: z.string().min(3),
+  })
+  .refine(({ confirmPassword, password }) => password === confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'], // path of error
+  })
+
+type FormValues = z.infer<typeof registerSchema>
 
 export const SignUpForm = () => {
-  const { control, handleSubmit } = useForm<FormValues>()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({
+    resolver: zodResolver(registerSchema),
+  })
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -28,6 +43,7 @@ export const SignUpForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.email?.message}
             label={'Email'}
             name={'email'}
             type={'text'}
@@ -35,6 +51,7 @@ export const SignUpForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.password?.message}
             label={'Password'}
             name={'password'}
             type={'password'}
@@ -42,6 +59,7 @@ export const SignUpForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.confirmPassword?.message}
             label={'Confirm Password'}
             name={'confirmPassword'}
             type={'password'}
