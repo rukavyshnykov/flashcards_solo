@@ -4,7 +4,7 @@ import c from './FileUploader.module.scss'
 
 import { Button, ButtonProps } from '../Button'
 
-export const FileUploader = ({ children, setImageSrc, ...rest }: FileUploaderProps) => {
+export const FileUploader = ({ children, className, setImageSrc, ...rest }: FileUploaderProps) => {
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImageSrc(URL.createObjectURL(event.target.files[0]))
@@ -14,7 +14,7 @@ export const FileUploader = ({ children, setImageSrc, ...rest }: FileUploaderPro
   return (
     <Button
       as={'label'}
-      className={c.fileInputLabel + ` ${!children ? c.onlyIcon : ''}`}
+      className={c.fileInputLabel + ` ${!children ? c.onlyIcon : ''} ` + className}
       variant={'secondary'}
       {...rest}
     >
