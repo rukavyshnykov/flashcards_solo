@@ -4,15 +4,25 @@ import { ControlledInput } from '@/components/controlled/ControlledInput'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 
 import c from './CreateNewPassword.module.scss'
 
-type FormValues = {
-  password: string
-}
+const newPasswordSchema = z.object({
+  password: z.string().min(3),
+})
+
+type FormValues = z.infer<typeof newPasswordSchema>
 
 export const CreateNewPasswordForm = () => {
-  const { control, handleSubmit } = useForm<FormValues>()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({
+    resolver: zodResolver(newPasswordSchema),
+  })
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -26,6 +36,7 @@ export const CreateNewPasswordForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.password?.message}
             label={'Password'}
             name={'password'}
             type={'password'}
