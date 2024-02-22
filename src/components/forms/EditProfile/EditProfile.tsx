@@ -8,13 +8,25 @@ import { Card } from '@/components/ui/Card'
 import { FileUploader } from '@/components/ui/FileUploader'
 import { Icon } from '@/components/ui/Icon/Icon'
 import { Typography } from '@/components/ui/Typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 
 import c from './EditProfile.module.scss'
+
+const editProfileSchema = z.object({
+  nickname: z.string().min(2),
+})
 
 export const EditProfileForm = () => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
-  const { control, handleSubmit } = useForm<FormValues>()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({
+    resolver: zodResolver(editProfileSchema),
+  })
 
   const onSubmit = (data: FormValues) => {
     setEditMode(!editMode)
@@ -50,6 +62,7 @@ export const EditProfileForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
+            errorMessage={errors.nickname?.message}
             label={'Nickname'}
             name={'nickname'}
             type={'text'}
@@ -86,6 +99,4 @@ type AvatarProps = {
   isEditMode?: boolean
 }
 
-type FormValues = {
-  nickname: string
-}
+type FormValues = z.infer<typeof editProfileSchema>

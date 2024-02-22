@@ -1,12 +1,10 @@
-import { LoginForm } from './components/forms/Auth'
-import { CreateNewPasswordForm } from './components/forms/CreateNewPassword'
-import { ForgotPasswordForm } from './components/forms/ForgotPassword'
+import { EditProfileForm } from './components/forms/EditProfile'
 
 export function App() {
   return (
     <>
       <div>Hello</div>
-      <CreateNewPasswordForm />
+      <EditProfileForm />
     </>
   )
 }
