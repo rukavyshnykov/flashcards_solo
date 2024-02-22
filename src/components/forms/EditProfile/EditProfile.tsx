@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { FileUploader } from '@/components/ui/FileUploader'
 import { Icon } from '@/components/ui/Icon/Icon'
-import { Input } from '@/components/ui/Input'
 import { Typography } from '@/components/ui/Typography'
 
 import c from './EditProfile.module.scss'
@@ -16,6 +15,11 @@ export const EditProfileForm = () => {
   const [editMode, setEditMode] = useState<boolean>(false)
 
   const { control, handleSubmit } = useForm<FormValues>()
+
+  const onSubmit = (data: FormValues) => {
+    setEditMode(!editMode)
+    console.log(data)
+  }
 
   return (
     <Card>
@@ -42,7 +46,7 @@ export const EditProfileForm = () => {
           </Button>
         </div>
       ) : (
-        <form className={c.form}>
+        <form className={c.form} onSubmit={handleSubmit(onSubmit)}>
           <ControlledInput
             control={control}
             defaultValue={''}
@@ -58,6 +62,8 @@ export const EditProfileForm = () => {
     </Card>
   )
 }
+
+//TODO create separate file form avatar component
 
 const Avatar = ({ avatar = placeholder, isEditMode }: AvatarProps) => {
   const [src, setSrc] = useState<string>(avatar)
