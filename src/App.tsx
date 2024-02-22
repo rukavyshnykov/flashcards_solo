@@ -1,12 +1,10 @@
-import { ForgotPasswordForm } from './components/forms/ForgotPassword'
-import { SignUpForm } from './components/forms/SignUp'
-import { Radio } from './components/ui/Radio'
+import { LoginForm } from './components/forms/Auth'
 
 export function App() {
   return (
     <>
       <div>Hello</div>
-      <Radio />
+      <LoginForm />
     </>
   )
 }

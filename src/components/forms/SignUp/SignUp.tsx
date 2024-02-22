@@ -17,7 +17,7 @@ const registerSchema = z
   })
   .refine(({ confirmPassword, password }) => password === confirmPassword, {
     message: "Passwords don't match",
-    path: ['confirmPassword'], // path of error
+    path: ['confirmPassword'],
   })
 
 type FormValues = z.infer<typeof registerSchema>
