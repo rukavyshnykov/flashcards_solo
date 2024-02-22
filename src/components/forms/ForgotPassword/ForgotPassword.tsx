@@ -6,15 +6,25 @@ import { ControlledInput } from '@/components/controlled/ControlledInput'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
+import { zodResolver } from '@hookform/resolvers/zod'
+import z from 'zod'
 
 import c from './ForgotPassword.module.scss'
 
-type FormValues = {
-  email: string
-}
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+})
+
+type FormValues = z.infer<typeof forgotPasswordSchema>
 
 export const ForgotPasswordForm = () => {
-  const { control, handleSubmit } = useForm<FormValues>()
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormValues>({
+    resolver: zodResolver(forgotPasswordSchema),
+  })
   const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
   const onSubmit = (data: any) => {
@@ -32,6 +42,7 @@ export const ForgotPasswordForm = () => {
               <ControlledInput
                 control={control}
                 defaultValue={''}
+                errorMessage={errors.email?.message}
                 label={'Email'}
                 name={'email'}
                 type={'text'}
