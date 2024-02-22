@@ -43,7 +43,7 @@ export const SuperSelect = ({
   </>
 )
 
-type Option = {
+export type Option = {
   label: string
   value: string
 }
