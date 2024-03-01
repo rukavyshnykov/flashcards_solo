@@ -2,6 +2,7 @@ import { ComponentPropsWithoutRef, forwardRef, useState } from 'react'
 
 import c from './Input.module.scss'
 
+import { Button } from '../Button'
 import { Icon } from '../Icon/Icon'
 import { Typography } from '../Typography'
 
@@ -47,8 +48,19 @@ export const Input = forwardRef<HTMLInputElement, PropsType>(
   }
 )
 
-const InputVisibilityIcon = ({ handleVisibility, ...rest }: InputVisibilityIconProps) => {
-  return <Icon height={20} onClick={handleVisibility} width={20} {...rest} />
+const InputVisibilityIcon = ({
+  className,
+  handleVisibility,
+  ...rest
+}: InputVisibilityIconProps) => {
+  return (
+    <Button
+      className={className}
+      icon={<Icon fill={'white'} height={20} width={20} {...rest} />}
+      onClick={handleVisibility}
+      variant={'blank'}
+    />
+  )
 }
 
 type InputVisibilityIconProps = {
