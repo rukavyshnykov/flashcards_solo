@@ -41,19 +41,20 @@ export const EditProfileForm = () => {
         <div className={c.info}>
           <div className={c.name}>
             <Typography variant={'h2'}>Name</Typography>
-            <Icon
+            <Button
               className={c.icon}
-              fill={'white'}
-              height={16}
-              iconId={'edit'}
+              icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
               onClick={() => setEditMode(!editMode)}
-              width={16}
+              variant={'blank'}
             />
           </div>
           <Typography className={c.email} variant={'body2'}>
             email@mail.com
           </Typography>
-          <Button iconId={'out'} variant={'secondary'}>
+          <Button
+            icon={<Icon fill={'white'} height={16} iconId={'out'} width={16} />}
+            variant={'secondary'}
+          >
             <Typography variant={'subtitle2'}>Logout</Typography>
           </Button>
         </div>
@@ -88,7 +89,11 @@ const Avatar = ({ avatar = placeholder, isEditMode }: AvatarProps) => {
     <div className={c.avatar}>
       <img className={c.image} src={src} />
       {!isEditMode && (
-        <FileUploader className={c.edit} iconId={'edit'} setImageSrc={onImageChange} />
+        <FileUploader
+          className={c.edit}
+          icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
+          setImageSrc={onImageChange}
+        />
       )}
     </div>
   )
