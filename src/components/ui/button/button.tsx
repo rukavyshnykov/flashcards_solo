@@ -2,15 +2,13 @@ import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 import c from './Button.module.scss'
 
-import { Icon } from '../Icon/Icon'
-
 export type ButtonProps<T extends ElementType = 'button'> = {
   as?: T
   children?: ReactNode
   className?: string
   fullWidth?: boolean
-  iconId?: string
-  variant?: 'primary' | 'secondary'
+  icon?: ReactNode
+  variant?: 'blank' | 'primary' | 'secondary'
 } & ComponentPropsWithoutRef<T>
 
 export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T>) => {
@@ -19,7 +17,7 @@ export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T>) 
     children,
     className,
     fullWidth,
-    iconId,
+    icon,
     variant = 'primary',
     ...rest
   } = props
@@ -29,7 +27,7 @@ export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T>) 
       className={c.button + ` ${c[variant]} ${fullWidth ? c.fullWidth : ''} ${className}`}
       {...rest}
     >
-      {iconId && <Icon fill={'white'} height={16} iconId={iconId} width={16} />}
+      {icon}
       {children}
     </Component>
   )
