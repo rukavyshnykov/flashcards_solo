@@ -1,0 +1,92 @@
+.trigger {
+  all: unset;
+  position: relative;
+  margin: 100px;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 0;
+    height: 0;
+
+    background-color: var(--color-dark-500);
+    border-radius: 50%;
+
+    transition: 0.2s;
+  }
+
+  &:hover::before {
+    width: 36px;
+    height: 36px;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px 0;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 4px;
+
+  .separator {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-dark-500);
+
+    &:last-of-type {
+      display: none;
+    }
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+
+  transition: 0.4s;
+
+  &[data-highlighted] {
+    border: 0;
+
+    &:has(svg) {
+      color: var(--color-accent-100);
+      fill: var(--color-accent-100);
+    }
+  }
+
+  &:has(svg) {
+    cursor: pointer;
+  }
+}
+
+span:has(.arrow2) {
+  top: 1px !important;
+}
+
+.arrow1 {
+  fill: var(--color-dark-500);
+}
+
+.arrow2 {
+  fill: var(--color-dark-700);
+}
