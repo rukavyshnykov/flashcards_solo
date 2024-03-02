@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
 import { ControlledCheckbox } from '@/components/controlled/ControlledCheckbox'
 import { ControlledInput } from '@/components/controlled/ControlledInput'
@@ -59,7 +60,12 @@ export const LoginForm = () => {
           label={'Remember me'}
           name={'rememberMe'}
         />
-        <Typography as={'a'} className={c.forgotPassword} href={'#'} variant={'body2'}>
+        <Typography
+          as={Link}
+          className={c.forgotPassword}
+          to={'/forgot-password'}
+          variant={'body2'}
+        >
           Forgot Password?
         </Typography>
         <Button fullWidth type={'submit'}>
@@ -69,7 +75,7 @@ export const LoginForm = () => {
           <Typography className={c.caption} variant={'body2'}>
             Don't have an account?
           </Typography>
-          <Typography className={c.signUp} variant={'body1'}>
+          <Typography as={Link} className={c.signUp} to={'/register'} variant={'body1'}>
             Sign Up
           </Typography>
         </div>
