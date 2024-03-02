@@ -1,7 +1,6 @@
 .trigger {
   all: unset;
   position: relative;
-  margin: 100px;
 
   &::before {
     content: '';
@@ -26,7 +25,8 @@
     height: 36px;
   }
 
-  svg {
+  svg,
+  img {
     display: block;
   }
 }
@@ -58,24 +58,42 @@
 
 .item {
   display: flex;
+  gap: 0 8px;
   align-items: center;
   justify-content: flex-start;
 
   width: 100%;
 
+  color: white;
+
   transition: 0.4s;
 
-  &[data-highlighted] {
-    border: 0;
-
-    &:has(svg) {
-      color: var(--color-accent-100);
-      fill: var(--color-accent-100);
-    }
+  svg,
+  span {
+    transition: 0.4s;
   }
 
   &:has(svg) {
     cursor: pointer;
+
+    svg {
+      fill: white;
+    }
+  }
+
+  &[data-highlighted] {
+    border: 0;
+    outline: 0;
+
+    &:has(svg) {
+      * {
+        color: var(--color-accent-100);
+      }
+
+      svg {
+        fill: var(--color-accent-100);
+      }
+    }
   }
 }
 
