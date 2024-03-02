@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
 import checkEmail from '@/assets/check-email.png'
 import { ControlledInput } from '@/components/controlled/ControlledInput'
@@ -58,7 +59,7 @@ export const ForgotPasswordForm = () => {
               <Typography className={c.caption} variant={'body2'}>
                 Did you remember your password?
               </Typography>
-              <Typography className={c.signUp} variant={'body1'}>
+              <Typography as={Link} className={c.signUp} to={'/login'} variant={'body1'}>
                 Try logging in
               </Typography>
             </div>
