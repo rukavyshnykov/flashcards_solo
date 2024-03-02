@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import logo from '@/assets/logo.png'
 import placeholder from '@/assets/placeholder.jpg'
 
@@ -12,7 +14,7 @@ export const Header = () => {
   return (
     <div className={c.container}>
       <div className={c.content}>
-        <Button variant={'blank'}>
+        <Button as={Link} to={'/'} variant={'blank'}>
           <img className={c.logo} src={logo} />
         </Button>
         <div className={c.personalData}>
@@ -34,8 +36,10 @@ export const Header = () => {
               <Typography variant={'caption'}>My Profile</Typography>
             </DropdownItem>
             <DropdownItem>
-              <Icon height={16} iconId={'out'} width={16} />
-              <Typography variant={'caption'}>Sign Out</Typography>
+              <Button as={Link} to={'/login'}>
+                <Icon height={16} iconId={'out'} width={16} />
+                <Typography variant={'caption'}>Sign Out</Typography>
+              </Button>
             </DropdownItem>
           </Dropdown>
         </div>
