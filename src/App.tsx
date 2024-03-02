@@ -1,8 +1,7 @@
 import { LoginForm } from './components/forms/Auth'
 import { EditProfileForm } from './components/forms/EditProfile'
 import { Dropdown, DropdownItem } from './components/ui/Dropdown/Dropdown'
-import { Header } from './components/ui/Header/Header'
-import { Input } from './components/ui/Input'
+import { Header } from './components/ui/Header'
 
 export function App() {
   return (
