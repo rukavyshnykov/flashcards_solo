@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { ControlledCheckbox } from '@/components/controlled/ControlledCheckbox'
 import { ControlledInput } from '@/components/controlled/ControlledInput'
+import { useLoginMutation } from '@/components/pages/Login/authApi'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
@@ -14,23 +15,19 @@ import c from './Login.module.scss'
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3),
-  rememberMe: z.boolean().default(false),
+  rememberMe: z.boolean(),
 })
 
-type FormValues = z.infer<typeof loginSchema>
+export type LoginFormValues = z.infer<typeof loginSchema>
 
-export const LoginForm = () => {
+export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<FormValues>({
+  } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   })
-
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
 
   return (
     <Card>
@@ -82,4 +79,8 @@ export const LoginForm = () => {
       </form>
     </Card>
   )
+}
+
+type LoginFormProps = {
+  onSubmit: (data: LoginFormValues) => void
 }
