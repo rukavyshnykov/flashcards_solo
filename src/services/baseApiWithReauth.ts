@@ -5,8 +5,6 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
 
-import { router } from '../router'
-
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://api.flashcards.andrii.es',
   credentials: 'include',
@@ -29,7 +27,8 @@ export const baseQueryWithReauth: BaseQueryFn<
     if (refreshResult.meta?.response && refreshResult.meta.response.status === 204) {
       result = await baseQuery(args, api, extraOptions)
     } else {
-      console.log('dshfksjhdgfjksd')
+      //   console.log('dshfksjhdgfjksd')
+      // TODO: get some help
     }
   }
 
