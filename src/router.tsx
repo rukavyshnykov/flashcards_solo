@@ -11,6 +11,7 @@ import { ForgotPasswordPage } from './components/pages/ForgotPassword/ForgotPass
 import { Layout } from './components/pages/Layout/Layout'
 import { LoginPage } from './components/pages/Login/Login'
 import { useGetMeQuery } from './components/pages/Login/authApi'
+import { MyProfilePage } from './components/pages/MyProfile/MyProfile'
 import { RegisterPage } from './components/pages/Register/Register'
 
 const publicRoutes: RouteObject[] = [
@@ -32,6 +33,10 @@ const privateRoutes: RouteObject[] = [
   {
     element: <DecksPage />,
     path: '/',
+  },
+  {
+    element: <MyProfilePage />,
+    path: '/edit-profile',
   },
 ]
 
