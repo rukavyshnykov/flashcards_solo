@@ -7,18 +7,18 @@ import { Icon } from '../Icon/Icon'
 export const SuperSelect = ({
   disabled,
   handleSelectChange,
+  isPagination,
   label,
   options,
   value,
 }: SelectProps) => (
   <>
     {label && <span>{label}</span>}
-    <Select.Root
-      defaultValue={value}
-      onValueChange={value => handleSelectChange(value)}
-      value={value}
-    >
-      <Select.Trigger className={c.trigger} disabled={disabled}>
+    <Select.Root onValueChange={value => handleSelectChange(value)} value={value}>
+      <Select.Trigger
+        className={c.trigger + ` ${isPagination ? c.isPagination : ''}`}
+        disabled={disabled}
+      >
         <Select.Value
           placeholder={options?.length ? 'Select something...' : 'Nothing to choose here'}
         />
@@ -31,7 +31,11 @@ export const SuperSelect = ({
           <Select.Viewport>
             {options?.map(({ label, value }: Option) => {
               return (
-                <Select.Item className={c.item} key={value} value={value}>
+                <Select.Item
+                  className={c.item + ` ${isPagination ? c.isPagination : ''}`}
+                  key={value}
+                  value={value}
+                >
                   <Select.ItemText>{label}</Select.ItemText>
                 </Select.Item>
               )
