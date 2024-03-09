@@ -12,29 +12,23 @@ import c from './SignUp.module.scss'
 
 const registerSchema = z
   .object({
-    confirmPassword: z.string().min(3),
+    confirmPassword: z.string().min(3).max(30),
     email: z.string().email(),
-    password: z.string().min(3),
+    password: z.string().min(3).max(30),
   })
   .refine(({ confirmPassword, password }) => password === confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
   })
 
-type FormValues = z.infer<typeof registerSchema>
-
-export const SignUpForm = () => {
+export const SignUpForm = ({ onSubmit }: RegisterFormProps) => {
   const {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<FormValues>({
+  } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
   })
-
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
 
   return (
     <Card>
@@ -80,4 +74,10 @@ export const SignUpForm = () => {
       </form>
     </Card>
   )
+}
+
+export type RegisterFormValues = z.infer<typeof registerSchema>
+
+type RegisterFormProps = {
+  onSubmit: (data: any) => void
 }
