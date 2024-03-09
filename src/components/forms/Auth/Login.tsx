@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import { ControlledCheckbox } from '@/components/controlled/ControlledCheckbox'
 import { ControlledInput } from '@/components/controlled/ControlledInput'
-import { useLoginMutation } from '@/components/pages/Login/authApi'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Typography } from '@/components/ui/Typography'
@@ -15,7 +14,7 @@ import c from './Login.module.scss'
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(3),
-  rememberMe: z.boolean(),
+  rememberMe: z.boolean().optional(),
 })
 
 export type LoginFormValues = z.infer<typeof loginSchema>
