@@ -58,6 +58,7 @@ const InputVisibilityIcon = ({
       className={className}
       icon={<Icon fill={'white'} height={20} width={20} {...rest} />}
       onClick={handleVisibility}
+      type={'button'}
       variant={'blank'}
     />
   )
