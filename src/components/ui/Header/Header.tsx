@@ -12,7 +12,7 @@ import { Icon } from '../Icon/Icon'
 import { Typography } from '../Typography'
 
 export const Header = () => {
-  const { data } = useGetMeQuery()
+  const { data: me, isError } = useGetMeQuery()
   const [logout] = useLogoutMutation()
 
   return (
@@ -22,30 +22,42 @@ export const Header = () => {
           <img className={c.logo} src={logo} />
         </Button>
         <div className={c.personalData}>
-          <Typography className={c.name} variant={'subtitle1'}>
-            {data?.name}
-          </Typography>
-          <Dropdown trigger={<img className={c.avatar} src={placeholder} />}>
-            <DropdownItem>
-              <img className={c.avatar} src={data?.avatar ? data?.avatar : placeholder} />
-              <div className={c.info}>
-                <Typography variant={'subtitle2'}>{data?.name}</Typography>
-                <Typography className={c.email} variant={'caption'}>
-                  {data?.email}
-                </Typography>
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <Icon height={16} iconId={'profile'} width={16} />
-              <Typography variant={'caption'}>My Profile</Typography>
-            </DropdownItem>
-            <DropdownItem>
-              <Button onClick={() => logout()} type={'button'}>
-                <Icon height={16} iconId={'out'} width={16} />
-                <Typography variant={'caption'}>Sign Out</Typography>
-              </Button>
-            </DropdownItem>
-          </Dropdown>
+          {isError ? (
+            <Button as={Link} className={c.signIn} to={'/login'} variant={'secondary'}>
+              Sign In
+            </Button>
+          ) : (
+            <>
+              <Typography className={c.name} variant={'subtitle1'}>
+                {me?.name}
+              </Typography>
+              <Dropdown
+                trigger={<img className={c.avatar} src={me?.avatar ? me?.avatar : placeholder} />}
+              >
+                <DropdownItem>
+                  <img className={c.avatar} src={me?.avatar ? me?.avatar : placeholder} />
+                  <div className={c.info}>
+                    <Typography variant={'subtitle2'}>{me?.name}</Typography>
+                    <Typography className={c.email} variant={'caption'}>
+                      {me?.email}
+                    </Typography>
+                  </div>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link className={c.myProfile} to={'/edit-profile'}>
+                    <Icon height={16} iconId={'profile'} width={16} />
+                    <Typography variant={'caption'}>My Profile</Typography>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Button onClick={() => logout()} type={'button'} variant={'blank'}>
+                    <Icon height={16} iconId={'out'} width={16} />
+                    <Typography variant={'caption'}>Sign Out</Typography>
+                  </Button>
+                </DropdownItem>
+              </Dropdown>
+            </>
+          )}
         </div>
       </div>
     </div>
