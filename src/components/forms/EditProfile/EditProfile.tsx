@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 
 import placeholder from '@/assets/placeholder.jpg'
 import { ControlledInput } from '@/components/controlled/ControlledInput'
+import { useGetMeQuery, useSetMeMutation } from '@/components/pages/Login/authApi'
+import { EditProfileArgs } from '@/components/pages/Login/authTypes'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { FileUploader } from '@/components/ui/FileUploader'
@@ -14,11 +16,12 @@ import z from 'zod'
 import c from './EditProfile.module.scss'
 
 const editProfileSchema = z.object({
-  nickname: z.string().min(2),
+  name: z.string().min(2),
 })
 
-export const EditProfileForm = () => {
+export const EditProfileForm = ({ onSubmit }: EditProfileFormProps) => {
   const [editMode, setEditMode] = useState<boolean>(false)
+  const { data: me } = useGetMeQuery()
 
   const {
     control,
@@ -28,11 +31,6 @@ export const EditProfileForm = () => {
     resolver: zodResolver(editProfileSchema),
   })
 
-  const onSubmit = (data: FormValues) => {
-    setEditMode(!editMode)
-    console.log(data)
-  }
-
   return (
     <Card>
       <Typography variant={'h1'}>Personal Information</Typography>
@@ -40,7 +38,7 @@ export const EditProfileForm = () => {
       {!editMode ? (
         <div className={c.info}>
           <div className={c.name}>
-            <Typography variant={'h2'}>Name</Typography>
+            <Typography variant={'h2'}>{me?.name}</Typography>
             <Button
               className={c.icon}
               icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
@@ -49,7 +47,7 @@ export const EditProfileForm = () => {
             />
           </div>
           <Typography className={c.email} variant={'body2'}>
-            email@mail.com
+            {me?.email}
           </Typography>
           <Button
             icon={<Icon fill={'white'} height={16} iconId={'out'} width={16} />}
@@ -63,9 +61,9 @@ export const EditProfileForm = () => {
           <ControlledInput
             control={control}
             defaultValue={''}
-            errorMessage={errors.nickname?.message}
+            errorMessage={errors.name?.message}
             label={'Nickname'}
-            name={'nickname'}
+            name={'name'}
             type={'text'}
           />
           <Button fullWidth type={'submit'} variant={'primary'}>
@@ -80,9 +78,13 @@ export const EditProfileForm = () => {
 //TODO create separate file form avatar component
 
 const Avatar = ({ avatar = placeholder, isEditMode }: AvatarProps) => {
-  const [src, setSrc] = useState<string>(avatar)
-  const onImageChange = (avatar: string) => {
-    setSrc(avatar)
+  const [setNewImage] = useSetMeMutation()
+  const { data } = useGetMeQuery()
+
+  const src = data?.avatar
+
+  const setFile = (file: File) => {
+    setNewImage({ avatar: file })
   }
 
   return (
@@ -92,7 +94,7 @@ const Avatar = ({ avatar = placeholder, isEditMode }: AvatarProps) => {
         <FileUploader
           className={c.edit}
           icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
-          setImageSrc={onImageChange}
+          setFile={setFile}
         />
       )}
     </div>
@@ -105,3 +107,7 @@ type AvatarProps = {
 }
 
 type FormValues = z.infer<typeof editProfileSchema>
+
+type EditProfileFormProps = {
+  onSubmit: (name: EditProfileArgs) => void
+}
