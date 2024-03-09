@@ -7,3 +7,16 @@ export type User = {
   name: string
   updated: string
 }
+
+export type RegisterArgs = {
+  email: string
+  html?: string
+  name?: string
+  password: string
+  sendConfirmationEmail?: boolean
+  subject?: string
+}
+
+export type EditProfileArgs = {
+  name: string
+}
