@@ -4,10 +4,10 @@ import c from './FileUploader.module.scss'
 
 import { Button, ButtonProps } from '../Button'
 
-export const FileUploader = ({ children, className, setImageSrc, ...rest }: FileUploaderProps) => {
+export const FileUploader = ({ children, className, setFile, ...rest }: FileUploaderProps) => {
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImageSrc(URL.createObjectURL(event.target.files[0]))
+      setFile(event.target.files[0])
     }
   }
 
@@ -25,5 +25,5 @@ export const FileUploader = ({ children, className, setImageSrc, ...rest }: File
 }
 
 type FileUploaderProps = {
-  setImageSrc: (src: string) => void
+  setFile: (file: File) => void
 } & ButtonProps
