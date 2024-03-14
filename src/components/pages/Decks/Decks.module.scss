@@ -1,0 +1,23 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 35px 0;
+  align-items: center;
+
+  width: 100%;
+}
+
+.filterBar {
+  display: flex;
+  gap: 0 24px;
+  align-items: flex-end;
+}
+
+.table {
+  transition: 0.4s;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
