@@ -1,7 +1,5 @@
 import { useState } from 'react'
 
-import { Pagination } from '@/components/pages/Decks/decksTypes'
-
 import c from './Pagination.module.scss'
 
 import { Button } from '../Button'
@@ -29,30 +27,37 @@ const SelectOptions = [
 
 const gap = '...'
 
-const total = 1000
-
-export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
-  const [value, setValue] = useState(SelectOptions[0].value)
+export const PaginationBar = ({
+  itemsPerPage,
+  page,
+  setItems,
+  setPage,
+  totalItems,
+  totalPages,
+}: PaginationProps) => {
+  const [value, setValue] = useState<number>(itemsPerPage)
   const onSelectChange = (value: string) => {
-    setValue(value)
+    setValue(+value)
     setItems(Number(value))
   }
   const arrayRange = (start: number, stop: number, step: number) =>
     Array.from({ length: (stop - start) / step + 1 }, (_, index) => start + index * step)
 
-  const [curp, setCur] = useState(5)
+  const [curp, setCur] = useState(+page)
 
   const setCurp = (page: number) => {
     setCur(page)
     setPage(page)
   }
 
-  const pages = Math.floor(total / Number(value))
-
   const pagesArr = [curp - 1, curp, curp + 1]
 
   const edgesArr =
-    curp <= 4 ? arrayRange(2, 4, 1) : curp >= pages - 4 ? arrayRange(pages - 3, pages - 1, 1) : []
+    curp <= 4
+      ? arrayRange(2, 4, 1)
+      : curp >= totalPages - 4
+        ? arrayRange(totalPages - 3, totalPages - 1, 1)
+        : []
 
   return (
     <div className={c.root}>
@@ -61,7 +66,7 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
           className={c.prev}
           disabled={curp === 1}
           icon={<Icon height={16} iconId={'prev'} width={16} />}
-          // onClick={() => setCurp(prev => prev - 1)}
+          onClick={() => setCurp(page - 1)}
           type={'button'}
           variant={'blank'}
         />
@@ -76,7 +81,7 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
         {curp > 4 && <div className={c.gap}>{gap}</div>}
 
         {/* ----------IF CLOSE TO EDGES---------- */}
-        {(curp <= 4 || curp >= pages - 4) &&
+        {(curp <= 4 || curp >= totalPages - 4) &&
           edgesArr.map(page => (
             <Button
               className={page === curp ? c.current : ''}
@@ -92,7 +97,7 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
 
         {/* ----------IF FAR FROM EDGES---------- */}
         {curp > 4 &&
-          curp < pages - 4 &&
+          curp < totalPages - 4 &&
           pagesArr.map(page => (
             <Button
               className={page === curp ? c.current : ''}
@@ -106,20 +111,20 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
           ))}
         {/* ----------IF FAR FROM EDGES---------- */}
 
-        {curp < pages - 4 && <div className={c.gap}>{gap}</div>}
+        {curp < totalPages - 4 && <div className={c.gap}>{gap}</div>}
         <Button
-          className={curp === pages ? c.current : ''}
-          onClick={() => setCurp(pages)}
+          className={curp === totalPages ? c.current : ''}
+          onClick={() => setCurp(totalPages)}
           type={'button'}
           variant={'blank'}
         >
-          {pages}
+          {totalPages}
         </Button>
         <Button
           className={c.next}
-          disabled={curp === pages}
+          disabled={curp === totalPages}
           icon={<Icon height={16} iconId={'next'} width={16} />}
-          // onClick={() => setCurp(prev => prev + 1)}
+          onClick={() => setCurp(page + 1)}
           type={'button'}
           variant={'blank'}
         />
@@ -130,7 +135,7 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
           handleSelectChange={onSelectChange}
           isPagination
           options={SelectOptions}
-          value={value}
+          value={String(value)}
         />
         на странице
       </div>
@@ -139,6 +144,10 @@ export const PaginationBar = ({ setItems, setPage }: PaginationProps) => {
 }
 
 type PaginationProps = {
+  itemsPerPage: number
+  page: number
   setItems: (items: number) => void
   setPage: (page: number) => void
+  totalItems?: number
+  totalPages: number
 }
