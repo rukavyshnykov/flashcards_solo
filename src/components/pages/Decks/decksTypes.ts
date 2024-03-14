@@ -1,10 +1,10 @@
 export type DecksArgs = {
-  authorId?: string
-  currentPage?: number
-  itemsPerPage?: number
-  maxCardsCount?: number
-  minCardsCount?: number
-  name?: string
+  authorId?: null | string
+  currentPage?: null | number
+  itemsPerPage?: null | number
+  maxCardsCount?: null | number
+  minCardsCount?: null | number
+  name?: null | string
   orderBy?: null | string
 }
 
@@ -35,4 +35,9 @@ export interface Deck {
 export interface Author {
   id: string
   name: string
+}
+
+export type MinMax = {
+  max: number
+  min: number
 }
