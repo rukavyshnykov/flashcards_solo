@@ -6,9 +6,7 @@ import { Button, ButtonProps } from '../Button'
 
 export const FileUploader = ({ children, className, setFile, ...rest }: FileUploaderProps) => {
   const onImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0])
-    }
+    event.target.files && event.target.files[0] && setFile(event.target.files[0])
   }
 
   return (
