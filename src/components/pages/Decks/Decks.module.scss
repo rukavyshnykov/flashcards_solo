@@ -1,23 +1,52 @@
 .root {
   display: flex;
   flex-direction: column;
-  gap: 35px 0;
   align-items: center;
 
   width: 100%;
+  max-width: 1000px;
 }
 
 .filterBar {
   display: flex;
   gap: 0 24px;
   align-items: flex-end;
+
+  width: 100%;
+  margin: 10px 0 36px;
 }
 
 .table {
+  margin-bottom: 24px;
   transition: 0.4s;
 
   &.disabled {
     pointer-events: none;
     opacity: 0.5;
   }
+}
+
+.headerBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.searchInput {
+  flex-grow: 1;
+}
+
+.tCell {
+  flex-grow: 1;
+  max-width: 200px;
+}
+
+.tRow {
+  display: flex;
+}
+
+.deckActions {
+  display: flex;
+  gap: 0 10px;
+  justify-content: flex-end;
 }
