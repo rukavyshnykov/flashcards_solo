@@ -6,6 +6,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
+import { DeckPage } from './components/pages/Deck/Deck'
 import { DecksPage } from './components/pages/Decks/Decks'
 import { ForgotPasswordPage } from './components/pages/ForgotPassword/ForgotPassword'
 import { Layout } from './components/pages/Layout/Layout'
@@ -33,6 +34,10 @@ const privateRoutes: RouteObject[] = [
   {
     element: <DecksPage />,
     path: '/',
+  },
+  {
+    element: <DeckPage />,
+    path: '/deck/:id',
   },
   {
     element: <MyProfilePage />,
