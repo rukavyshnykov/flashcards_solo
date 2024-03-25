@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -11,6 +11,7 @@ import { Typography } from '../Typography'
 type SuperModalProps = {
   changeModalState: (open: boolean) => void
   children: ReactNode
+  customTrigger?: ReactNode
   open: boolean
   title: string
   withTrigger: boolean
@@ -19,17 +20,24 @@ type SuperModalProps = {
 export const SuperModal = ({
   changeModalState,
   children,
+  customTrigger,
   open,
   title,
   withTrigger,
 }: SuperModalProps) => {
+  const [openState, setOpenState] = useState<boolean>(false)
+
   return (
-    <Dialog.Root onOpenChange={() => changeModalState(open)} open={open}>
+    <Dialog.Root onOpenChange={openState => setOpenState(openState!)} open={openState}>
       {withTrigger && (
-        <Dialog.Trigger className={c.trigger}>
-          <Button variant={'primary'}>
-            <Typography variant={'h3'}>{title}</Typography>
-          </Button>
+        <Dialog.Trigger className={c.trigger} onClick={() => setOpenState(!openState)}>
+          {customTrigger ? (
+            customTrigger
+          ) : (
+            <Button as={'span'} variant={'primary'}>
+              <Typography variant={'h3'}>{title}</Typography>
+            </Button>
+          )}
         </Dialog.Trigger>
       )}
       <Dialog.Portal>
