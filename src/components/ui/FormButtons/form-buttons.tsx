@@ -5,6 +5,7 @@ import { Typography } from '../Typography'
 
 export const FormButtons = ({
   changeModalState,
+  onClick,
   primaryButtonText,
   withSecondary,
 }: FormButtonsProps) => {
@@ -17,13 +18,13 @@ export const FormButtons = ({
               Cancel
             </Typography>
           </Button>
-          <Button variant={'primary'}>
+          <Button onClick={() => onClick?.()} variant={'primary'}>
             <Typography variant={'subtitle2'}>{primaryButtonText}</Typography>
           </Button>
         </div>
       ) : (
         <div className={c.footer + ' ' + c.only_primary}>
-          <Button variant={'primary'}>
+          <Button onClick={() => onClick?.()} variant={'primary'}>
             <Typography variant={'subtitle2'}>{primaryButtonText}</Typography>
           </Button>
         </div>
@@ -34,6 +35,7 @@ export const FormButtons = ({
 
 type FormButtonsProps = {
   changeModalState: (open: boolean) => void
+  onClick?: () => void
   primaryButtonText: string
   withSecondary?: boolean
 }
