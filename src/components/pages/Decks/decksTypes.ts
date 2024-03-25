@@ -41,3 +41,9 @@ export type MinMax = {
   max: number
   min: number
 }
+
+export type CreateDeckArgs = {
+  cover: File | null
+  isPrivate: boolean | null
+  name: string
+}
