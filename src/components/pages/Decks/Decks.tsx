@@ -1,9 +1,12 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
+import { AddNewDeckForm } from '@/components/forms/AddNewDeck/AddNewDeck'
 import { Button } from '@/components/ui/Button'
+import { FormButtons } from '@/components/ui/FormButtons'
 import { Icon } from '@/components/ui/Icon/Icon'
 import { Input } from '@/components/ui/Input'
+import { SuperModal } from '@/components/ui/Modal'
 import { PaginationBar } from '@/components/ui/Pagination/Pagination'
 import { Slider } from '@/components/ui/Slider'
 import { Table } from '@/components/ui/Table'
@@ -14,9 +17,17 @@ import { useDebounceValue } from 'usehooks-ts'
 import c from './Decks.module.scss'
 
 import { useGetMeQuery } from '../Login/authApi'
-import { useGetDecksMinMaxQuery, useGetDecksQuery } from './decksApi'
+import {
+  useAddDeckMutation,
+  useDeleteDeckMutation,
+  useGetDecksMinMaxQuery,
+  useGetDecksQuery,
+} from './decksApi'
+import { CreateDeckArgs } from './decksTypes'
 
 export const DecksPage = () => {
+  const [openDeleteDeck, setOpenDeleteDeck] = useState<boolean>(false)
+  const [openAddDeck, setOpenAddDeck] = useState<boolean>(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState<number>(
     searchParams.get('page') !== null ? Number(searchParams.get('page')) : 1
@@ -118,14 +129,50 @@ export const DecksPage = () => {
     setCardsRange([0, minMax?.max ?? 0])
   }
 
+  const [addNewDeck] = useAddDeckMutation()
+  const [deleteDeck] = useDeleteDeckMutation()
+
+  const createNewDeck = (args: CreateDeckArgs) => {
+    addNewDeck(args)
+    setOpenAddDeck(false)
+  }
+
+  const deleteDeckById = (id: string) => {
+    deleteDeck({ id })
+    setOpenDeleteDeck(false)
+  }
+
   if (minMaxLoading || decksLoading) {
     return <>Loader...</>
   }
 
   return (
     <div className={c.root}>
+      <div className={c.headerBar}>
+        <Typography variant={'h1'}>Decks list</Typography>
+        <SuperModal
+          changeModalState={setOpenAddDeck}
+          open={openAddDeck}
+          title={'Add New Deck'}
+          withTrigger
+        >
+          <AddNewDeckForm
+            changeModalState={setOpenAddDeck}
+            createNewDeck={createNewDeck}
+            primaryTextButton={'Add New Deck'}
+          />
+        </SuperModal>
+      </div>
       <div className={c.filterBar}>
-        <Input onChange={setNameParam} placeholder={'Search by name'} value={localName} />
+        <div className={c.searchInput}>
+          <Input
+            onChange={setNameParam}
+            placeholder={'Search by name'}
+            type={'text'}
+            value={localName}
+          />
+        </div>
+
         <Tabs onChange={setAuthor} options={options} value={authorId} />
         <Slider max={minMax?.max ?? 0} onValueCommit={setMinMaxParam} value={cardsRange} />
         <Button
@@ -138,20 +185,53 @@ export const DecksPage = () => {
       </div>
       <Table.Root className={c.table + ` ${decksFetching ? c.disabled : ''}`}>
         <Table.Head>
-          <Table.Row>
-            <Table.HeadCell>Name</Table.HeadCell>
-            <Table.HeadCell>Cards</Table.HeadCell>
-            <Table.HeadCell>Last Updated</Table.HeadCell>
-            <Table.HeadCell>Created By</Table.HeadCell>
+          <Table.Row className={c.tRow}>
+            <Table.HeadCell className={c.tCell}>Name</Table.HeadCell>
+            <Table.HeadCell className={c.tCell}>Cards</Table.HeadCell>
+            <Table.HeadCell className={c.tCell}>Last Updated</Table.HeadCell>
+            <Table.HeadCell className={c.tCell}>Created By</Table.HeadCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
           {decks?.items.map(item => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.cardsCount}</Table.Cell>
-              <Table.Cell>{item.updated}</Table.Cell>
-              <Table.Cell>{item.author.name}</Table.Cell>
+            <Table.Row className={c.tRow} key={item.id}>
+              <Table.Cell className={c.tCell}>
+                <Link to={`/deck/${item.id}`}>{item.name}</Link>
+              </Table.Cell>
+              <Table.Cell className={c.tCell}>{item.cardsCount}</Table.Cell>
+              <Table.Cell className={c.tCell}>
+                {new Date(item.updated).toLocaleDateString('ru-RU')}
+              </Table.Cell>
+              <Table.Cell className={c.tCell}>{item.author.name}</Table.Cell>
+              <Table.Cell className={c.tCell + ' ' + c.deckActions}>
+                <Button
+                  icon={<Icon fill={'white'} height={16} iconId={'play'} width={16} />}
+                  variant={'blank'}
+                />
+                {item.userId === me?.id && (
+                  <>
+                    <Button
+                      icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
+                      variant={'blank'}
+                    />
+                    <SuperModal
+                      changeModalState={setOpenDeleteDeck}
+                      customTrigger={<Icon fill={'white'} height={16} iconId={'bin'} width={16} />}
+                      open={openDeleteDeck}
+                      title={'Delete Deck'}
+                      withTrigger
+                    >
+                      Do you really want to remove {item.name}? All cards will be deleted.
+                      <FormButtons
+                        changeModalState={setOpenDeleteDeck}
+                        onClick={() => deleteDeckById(item.id)}
+                        primaryButtonText={'Delete Deck'}
+                        withSecondary
+                      />
+                    </SuperModal>
+                  </>
+                )}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
