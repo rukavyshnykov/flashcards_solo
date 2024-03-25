@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { ComponentPropsWithoutRef, ReactNode, useState } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
@@ -7,9 +7,11 @@ import c from './Dropdown.module.scss'
 import { Icon } from '../Icon/Icon'
 
 export const Dropdown = ({ children, trigger }: DropdownProps) => {
+  const [state, setState] = useState(false)
+
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger className={c.trigger}>
+    <DropdownMenu.Root open={state}>
+      <DropdownMenu.Trigger className={c.trigger} onClick={() => setState(true)}>
         {trigger ?? <Icon height={24} iconId={'dropdown'} width={24} />}
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
@@ -17,6 +19,7 @@ export const Dropdown = ({ children, trigger }: DropdownProps) => {
           align={'end'}
           alignOffset={-11}
           className={c.content}
+          onClick={() => setState(false)}
           side={'bottom'}
           sideOffset={2}
         >
