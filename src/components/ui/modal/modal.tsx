@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 
 import * as Dialog from '@radix-ui/react-dialog'
 
@@ -25,12 +25,11 @@ export const SuperModal = ({
   title,
   withTrigger,
 }: SuperModalProps) => {
-  const [openState, setOpenState] = useState<boolean>(false)
 
   return (
-    <Dialog.Root onOpenChange={openState => setOpenState(openState!)} open={openState}>
+    <Dialog.Root onOpenChange={() => changeModalState(!open)} open={open}>
       {withTrigger && (
-        <Dialog.Trigger className={c.trigger} onClick={() => setOpenState(!openState)}>
+        <Dialog.Trigger className={c.trigger}>
           {customTrigger ? (
             customTrigger
           ) : (
