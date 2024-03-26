@@ -55,6 +55,21 @@ const decksApi = baseApi.injectEndpoints({
         url: '/v2/decks/min-max-cards',
       }),
     }),
+    patchDeck: builder.mutation<Deck, CreateDeckArgs & {id: string}>({
+      invalidatesTags: ['Decks'],
+      query: body => {
+        const formData = new FormData()
+
+        body.cover && formData.append('cover', body.cover)
+        formData.append('name', body.name)
+        formData.append('isPrivate', String(body.isPrivate))
+
+        return {
+        url: `/v1/decks/${body.id}`,
+        method: 'PATCH',
+        body: formData
+      }},
+    }),
   }),
 })
 
@@ -65,4 +80,5 @@ export const {
   useGetDeckQuery,
   useGetDecksMinMaxQuery,
   useGetDecksQuery,
+  usePatchDeckMutation
 } = decksApi
