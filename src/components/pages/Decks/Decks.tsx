@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckForm } from '@/components/forms/AddNewDeck/AddNewDeck'
 import { Button } from '@/components/ui/Button'
-import { FormButtons } from '@/components/ui/FormButtons'
 import { Icon } from '@/components/ui/Icon/Icon'
 import { Input } from '@/components/ui/Input'
 import { SuperModal } from '@/components/ui/Modal'
@@ -24,9 +23,9 @@ import {
   useGetDecksQuery,
 } from './decksApi'
 import { CreateDeckArgs } from './decksTypes'
+import { DeckActions } from '@/components/ui/DeckActions/DeckActions'
 
 export const DecksPage = () => {
-  const [openDeleteDeck, setOpenDeleteDeck] = useState<boolean>(false)
   const [openAddDeck, setOpenAddDeck] = useState<boolean>(false)
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState<number>(
@@ -130,17 +129,13 @@ export const DecksPage = () => {
   }
 
   const [addNewDeck] = useAddDeckMutation()
-  const [deleteDeck] = useDeleteDeckMutation()
 
   const createNewDeck = (args: CreateDeckArgs) => {
     addNewDeck(args)
     setOpenAddDeck(false)
   }
 
-  const deleteDeckById = (id: string) => {
-    deleteDeck({ id })
-    setOpenDeleteDeck(false)
-  }
+  
 
   if (minMaxLoading || decksLoading) {
     return <>Loader...</>
@@ -174,7 +169,7 @@ export const DecksPage = () => {
         </div>
 
         <Tabs onChange={setAuthor} options={options} value={authorId} />
-        <Slider max={minMax?.max ?? 0} onValueCommit={setMinMaxParam} value={cardsRange} />
+        <Slider max={minMax?.max ?? 0} onValueCommit={setMinMaxParam} value={cardsRange} label='Number of cards'/>
         <Button
           icon={<Icon fill={'white'} height={16} iconId={'bin'} width={16} />}
           onClick={resetFilters}
@@ -204,33 +199,7 @@ export const DecksPage = () => {
               </Table.Cell>
               <Table.Cell className={c.tCell}>{item.author.name}</Table.Cell>
               <Table.Cell className={c.tCell + ' ' + c.deckActions}>
-                <Button
-                  icon={<Icon fill={'white'} height={16} iconId={'play'} width={16} />}
-                  variant={'blank'}
-                />
-                {item.userId === me?.id && (
-                  <>
-                    <Button
-                      icon={<Icon fill={'white'} height={16} iconId={'edit'} width={16} />}
-                      variant={'blank'}
-                    />
-                    <SuperModal
-                      changeModalState={setOpenDeleteDeck}
-                      customTrigger={<Icon fill={'white'} height={16} iconId={'bin'} width={16} />}
-                      open={openDeleteDeck}
-                      title={'Delete Deck'}
-                      withTrigger
-                    >
-                      Do you really want to remove {item.name}? All cards will be deleted.
-                      <FormButtons
-                        changeModalState={setOpenDeleteDeck}
-                        onClick={() => deleteDeckById(item.id)}
-                        primaryButtonText={'Delete Deck'}
-                        withSecondary
-                      />
-                    </SuperModal>
-                  </>
-                )}
+                <DeckActions item={item}/>
               </Table.Cell>
             </Table.Row>
           ))}
