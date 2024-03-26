@@ -6,7 +6,7 @@ import c from './Slider.module.scss'
 
 import { Typography } from '../Typography'
 
-export const Slider = ({ max, onValueCommit, value }: PropsType) => {
+export const Slider = ({ max, onValueCommit, value, label }: PropsType) => {
   const [range, setRange] = useState(value)
 
   if (range[1] === 0) {
@@ -18,6 +18,8 @@ export const Slider = ({ max, onValueCommit, value }: PropsType) => {
   }, [value])
 
   return (
+  <div className={c.wrapper}>
+    {label && <Typography variant='body2'>{label}</Typography>}
     <div className={c.root}>
       <Typography className={c.indicator} variant={'body1'}>
         {range[0]}
@@ -39,12 +41,14 @@ export const Slider = ({ max, onValueCommit, value }: PropsType) => {
         {range[1]}
       </Typography>
     </div>
+    </div>
   )
 }
 
 type SliderProps = {
   max: number
   value: number[]
+  label: string
 }
 
 type PropsType = SliderProps &

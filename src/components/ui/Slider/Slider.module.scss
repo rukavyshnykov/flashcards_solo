@@ -4,6 +4,12 @@
   align-items: center;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
+}
+
 .slider {
   touch-action: none;
   user-select: none;
