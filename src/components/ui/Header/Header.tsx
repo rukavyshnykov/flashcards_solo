@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import logo from '@/assets/logo.png'
 import placeholder from '@/assets/placeholder.jpg'
 import { useGetMeQuery, useLogoutMutation } from '@/components/pages/Login/authApi'
+import { Button } from '@/components/ui/Button'
 
 import c from './Header.module.scss'
 
-import { Button } from '../Button'
 import { Dropdown, DropdownItem } from '../Dropdown'
 import { Icon } from '../Icon/Icon'
 import { Typography } from '../Typography'
