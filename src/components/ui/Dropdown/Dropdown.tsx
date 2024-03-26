@@ -22,6 +22,7 @@ export const Dropdown = ({ children, trigger }: DropdownProps) => {
           onClick={() => setState(false)}
           side={'bottom'}
           sideOffset={2}
+          onInteractOutside={() => setState(false)}
         >
           {children}
           <DropdownMenu.Arrow className={c.arrow1} height={8} width={16} />
