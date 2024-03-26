@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 
 import { AddNewDeckForm } from '@/components/forms/AddNewDeck/AddNewDeck'
 import { Button } from '@/components/ui/Button'
+import { DeckActions } from '@/components/ui/DeckActions/DeckActions'
 import { Icon } from '@/components/ui/Icon/Icon'
 import { Input } from '@/components/ui/Input'
 import { SuperModal } from '@/components/ui/Modal'
@@ -16,33 +17,12 @@ import { useDebounceValue } from 'usehooks-ts'
 import c from './Decks.module.scss'
 
 import { useGetMeQuery } from '../Login/authApi'
-import {
-  useAddDeckMutation,
-  useDeleteDeckMutation,
-  useGetDecksMinMaxQuery,
-  useGetDecksQuery,
-} from './decksApi'
+import { useAddDeckMutation, useGetDecksMinMaxQuery, useGetDecksQuery } from './decksApi'
 import { CreateDeckArgs } from './decksTypes'
-import { DeckActions } from '@/components/ui/DeckActions/DeckActions'
 
 export const DecksPage = () => {
-  const [openAddDeck, setOpenAddDeck] = useState<boolean>(false)
   const [searchParams, setSearchParams] = useSearchParams()
-  const [currentPage, setCurrentPage] = useState<number>(
-    searchParams.get('page') !== null ? Number(searchParams.get('page')) : 1
-  )
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
-    searchParams.get('items') !== null ? Number(searchParams.get('items')) : 5
-  )
-  const [name, setName] = useDebounceValue<string>(
-    searchParams.get('name') !== null ? String(searchParams.get('name')) : '',
-    1000
-  )
-  const [localName, setLocalName] = useState<string>(name)
 
-  useEffect(() => {
-    setName(localName)
-  }, [localName])
   const { data: me } = useGetMeQuery()
 
   const options = [
@@ -56,6 +36,15 @@ export const DecksPage = () => {
     },
   ]
 
+  const [openAddDeck, setOpenAddDeck] = useState<boolean>(false)
+  const [currentPage, setCurrentPage] = useState<number>(
+    searchParams.get('page') !== null ? Number(searchParams.get('page')) : 1
+  )
+  const [itemsPerPage, setItemsPerPage] = useState<number>(
+    searchParams.get('items') !== null ? Number(searchParams.get('items')) : 5
+  )
+  const [name, setName] = useDebounceValue<string>(searchParams.get('name') ?? '', 1000)
+  const [localName, setLocalName] = useState<string>(name)
   const [authorId, setAuthorId] = useState<string>(options[1].value)
 
   const {
@@ -66,9 +55,9 @@ export const DecksPage = () => {
 
   const minMax = minMaxCurrentData ?? minMaxData
 
-  const [cardsRange, setCardsRange] = useState<number[]>([
-    searchParams.get('min') !== null ? Number(searchParams.get('min')) : minMax?.min ?? 0,
-    searchParams.get('max') !== null ? Number(searchParams.get('max')) : minMax?.max ?? 0,
+  const [cardsRange, setCardsRange] = useState<(null | number)[]>([
+    searchParams.get('min') ? Number(searchParams.get('min')) : 0,
+    searchParams.get('max') ? Number(searchParams.get('max')) : null,
   ])
 
   const {
@@ -84,6 +73,10 @@ export const DecksPage = () => {
     name,
     orderBy: null,
   })
+
+  useEffect(() => {
+    setName(localName)
+  }, [localName])
 
   const setAuthor = (author: string) => {
     setSearchParams({ ...Object.fromEntries(searchParams), authorId: String(author) })
@@ -135,8 +128,6 @@ export const DecksPage = () => {
     setOpenAddDeck(false)
   }
 
-  
-
   if (minMaxLoading || decksLoading) {
     return <>Loader...</>
   }
@@ -169,7 +160,12 @@ export const DecksPage = () => {
         </div>
 
         <Tabs onChange={setAuthor} options={options} value={authorId} />
-        <Slider max={minMax?.max ?? 0} onValueCommit={setMinMaxParam} value={cardsRange} label='Number of cards'/>
+        <Slider
+          label={'Number of cards'}
+          max={minMax?.max ?? 0}
+          onValueCommit={setMinMaxParam}
+          value={cardsRange}
+        />
         <Button
           icon={<Icon fill={'white'} height={16} iconId={'bin'} width={16} />}
           onClick={resetFilters}
@@ -191,7 +187,10 @@ export const DecksPage = () => {
           {decks?.items.map(item => (
             <Table.Row className={c.tRow} key={item.id}>
               <Table.Cell className={c.tCell}>
-                <Link to={`/deck/${item.id}`}>{item.name}</Link>
+                <Link to={`/deck/${item.id}`}>
+                  {item.cover && <img src={item.cover} />}
+                  {item.name}
+                </Link>
               </Table.Cell>
               <Table.Cell className={c.tCell}>{item.cardsCount}</Table.Cell>
               <Table.Cell className={c.tCell}>
@@ -199,7 +198,7 @@ export const DecksPage = () => {
               </Table.Cell>
               <Table.Cell className={c.tCell}>{item.author.name}</Table.Cell>
               <Table.Cell className={c.tCell + ' ' + c.deckActions}>
-                <DeckActions item={item}/>
+                <DeckActions item={item} />
               </Table.Cell>
             </Table.Row>
           ))}

@@ -28,7 +28,6 @@ const decksApi = baseApi.injectEndpoints({
       }),
     }),
     getCards: builder.query<any, { id: string }>({
-      // providesTags: ['Deck'],
       query: ({ id }) => ({
         url: `/v1/decks/${id}/cards`,
       }),
@@ -39,23 +38,35 @@ const decksApi = baseApi.injectEndpoints({
         url: `/v1/decks/${id}`,
       }),
     }),
-    getDecks: builder.query<DecksResponse, DecksArgs | undefined>({
+    getDecks: builder.query<DecksResponse, DecksArgs>({
       providesTags: result =>
         result
           ? [...result.items.map(({ id }) => ({ id, type: 'Deck' as const })), 'Decks']
           : ['Decks'],
-      query: params => ({
-        params,
-        url: '/v2/decks',
-      }),
+      query: params => {
+        const refined = Object.fromEntries(
+          Object.entries(params).filter(
+            ([_, value]: any[]) =>
+              !(
+                value === undefined ||
+                value === null ||
+                (typeof value === 'string' && !value.length)
+              )
+          )
+        )
+
+        return {
+          params: refined,
+          url: '/v2/decks',
+        }
+      },
     }),
     getDecksMinMax: builder.query<MinMax, void>({
-      // providesTags: ['Decks'],
       query: () => ({
         url: '/v2/decks/min-max-cards',
       }),
     }),
-    patchDeck: builder.mutation<Deck, CreateDeckArgs & {id: string}>({
+    patchDeck: builder.mutation<Deck, CreateDeckArgs & { id: string }>({
       invalidatesTags: ['Decks'],
       query: body => {
         const formData = new FormData()
@@ -65,10 +76,11 @@ const decksApi = baseApi.injectEndpoints({
         formData.append('isPrivate', String(body.isPrivate))
 
         return {
-        url: `/v1/decks/${body.id}`,
-        method: 'PATCH',
-        body: formData
-      }},
+          body: formData,
+          method: 'PATCH',
+          url: `/v1/decks/${body.id}`,
+        }
+      },
     }),
   }),
 })
@@ -80,5 +92,5 @@ export const {
   useGetDeckQuery,
   useGetDecksMinMaxQuery,
   useGetDecksQuery,
-  usePatchDeckMutation
+  usePatchDeckMutation,
 } = decksApi
