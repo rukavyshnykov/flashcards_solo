@@ -1,42 +1,57 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { PaginationBar } from '@/components/ui/Pagination/Pagination'
+import { Button } from '@/components/ui/Button'
 import { Table } from '@/components/ui/Table'
-import { skip } from 'node:test'
+import { Typography } from '@/components/ui/Typography'
 
 import c from './Deck.module.scss'
 
 import { useGetCardsQuery, useGetDeckQuery } from '../Decks/decksApi'
+import { useGetMeQuery } from '../Login/authApi'
 
 export const DeckPage = () => {
   const { id } = useParams()
-  const { data: deck } = useGetDeckQuery({ id: id ?? '' }, { skip: Boolean(id) })
-  const { data: cards } = useGetCardsQuery({ id: id ?? '' }, { skip: !deck })
+  const { data: me, isFetching: check } = useGetMeQuery()
+  const { data: deck, isFetching: check1 } = useGetDeckQuery({ id: id ?? '' })
+  const { data: cards, isFetching: check2 } = useGetCardsQuery({ id: id ?? '' })
 
-  console.log(Boolean(deck))
+  if (check || check1 || check2) {
+    return <>Loader...</>
+  }
+
+  const isMyDeck = me?.id === deck?.userId
 
   return (
     <div className={c.root}>
-      <Table.Root className={c.table}>
-        <Table.Head>
-          <Table.Row>
-            <Table.HeadCell>Name</Table.HeadCell>
-            <Table.HeadCell>Cards</Table.HeadCell>
-            <Table.HeadCell>Last Updated</Table.HeadCell>
-            <Table.HeadCell>Created By</Table.HeadCell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {/* {?.items.map(item => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{item.cardsCount}</Table.Cell>
-              <Table.Cell>{item.updated}</Table.Cell>
-              <Table.Cell>{item.author.name}</Table.Cell>
+      <div className={c.headerBar}>
+        <Typography variant={'h1'}>{deck?.name}</Typography>
+        {isMyDeck && <Button variant={'primary'}>Add New Card</Button>}
+      </div>
+      {cards?.items.length ? (
+        <Table.Root className={c.table}>
+          <Table.Head>
+            <Table.Row>
+              <Table.HeadCell>Question</Table.HeadCell>
+              <Table.HeadCell>Answer</Table.HeadCell>
+              <Table.HeadCell>Last Updated</Table.HeadCell>
+              <Table.HeadCell>Grade</Table.HeadCell>
             </Table.Row>
-          ))} */}
-        </Table.Body>
-      </Table.Root>
+          </Table.Head>
+          <Table.Body>
+            {cards?.items.map(card => (
+              <Table.Row key={card.id}>
+                <Table.Cell>{card.question}</Table.Cell>
+                <Table.Cell>{card.answer}</Table.Cell>
+                <Table.Cell>{new Date(card.updated).toLocaleDateString('ru-RU')}</Table.Cell>
+                <Table.Cell>{card.grade}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table.Root>
+      ) : (
+        <>Empty Space</>
+      )}
       {/* <PaginationBar
         itemsPerPage={itemsPerPage}
         page={currentPage}
