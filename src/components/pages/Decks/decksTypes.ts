@@ -47,3 +47,35 @@ export type CreateDeckArgs = {
   isPrivate: boolean | null
   name: string
 }
+
+type Card = {
+  answer: string
+  answerImg: string
+  answerVideo: string
+  created: string
+  deckId: string
+  grade: number
+  id: string
+  question: string
+  questionImg: string
+  questionVideo: string
+  shots: number
+  updated: string
+  userId: string
+}
+
+export type CardsResponse = {
+  items: Card[]
+  pagination: Pagination
+}
+
+export type DeckResponse = {
+  cardsCount: number
+  cover: string
+  created: string
+  id: string
+  isPrivate: boolean
+  name: string
+  updated: string
+  userId: string
+}
