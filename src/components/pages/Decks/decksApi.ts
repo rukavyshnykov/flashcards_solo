@@ -1,6 +1,6 @@
 import { baseApi } from '@/services/baseApi'
 
-import { CreateDeckArgs, Deck, DecksArgs, DecksResponse, MinMax } from './decksTypes'
+import { CardsResponse, CreateDeckArgs, Deck, DecksArgs, DecksResponse, MinMax } from './decksTypes'
 
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -27,13 +27,13 @@ const decksApi = baseApi.injectEndpoints({
         url: `/v1/decks/${body.id}`,
       }),
     }),
-    getCards: builder.query<any, { id: string }>({
+    getCards: builder.query<CardsResponse, { id: string }>({
       query: ({ id }) => ({
         url: `/v1/decks/${id}/cards`,
       }),
     }),
-    getDeck: builder.query<any, { id: string }>({
-      providesTags: arg => [{ id: arg.id, type: 'Deck' }],
+    getDeck: builder.query<Deck, { id: string }>({
+      providesTags: arg => [{ id: arg!.id, type: 'Deck' }],
       query: ({ id }) => ({
         url: `/v1/decks/${id}`,
       }),
