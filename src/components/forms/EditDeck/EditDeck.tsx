@@ -14,11 +14,11 @@ import c from './EditDeck.module.scss'
 
 export const EditDeckForm = ({
   changeModalState,
-  editDeck,
-  primaryTextButton,
-  name,
   coverSrc,
-  isPrivate
+  editDeck,
+  isPrivate,
+  name,
+  primaryTextButton,
 }: EditDeckProps) => {
   const [cover, setCover] = useState<File | null>(null)
 
@@ -44,11 +44,11 @@ export const EditDeckForm = ({
     <form className={c.form} onSubmit={handleSubmit(onSubmit)}>
       <ControlledInput
         control={control}
+        defaultValue={name}
         errorMessage={errors.name?.message}
         label={'Deck name'}
         name={'name'}
         type={'text'}
-        defaultValue={name}
       />
       <img src={coverURL ?? coverSrc ?? ''} />
       <FileUploader
@@ -58,7 +58,12 @@ export const EditDeckForm = ({
       >
         Upload Image
       </FileUploader>
-      <ControlledCheckbox control={control} label={'Private pack'} name={'isPrivate'} defaultValue={isPrivate}/>
+      <ControlledCheckbox
+        control={control}
+        defaultValue={isPrivate}
+        label={'Private pack'}
+        name={'isPrivate'}
+      />
       <FormButtons
         changeModalState={changeModalState}
         primaryButtonText={primaryTextButton}
@@ -70,9 +75,9 @@ export const EditDeckForm = ({
 
 type EditDeckProps = {
   changeModalState: (value: boolean) => void
+  coverSrc: null | string
   editDeck: (args: CreateDeckArgs) => void
-  primaryTextButton: string
-  coverSrc: string | null
-  name: string
   isPrivate: boolean
+  name: string
+  primaryTextButton: string
 }

@@ -11,6 +11,7 @@ import { Typography } from '../Typography'
 type SuperModalProps = {
   changeModalState: (open: boolean) => void
   children: ReactNode
+  className?: string
   customTrigger?: ReactNode
   open: boolean
   title: string
@@ -20,20 +21,20 @@ type SuperModalProps = {
 export const SuperModal = ({
   changeModalState,
   children,
+  className,
   customTrigger,
   open,
   title,
   withTrigger,
 }: SuperModalProps) => {
-
   return (
     <Dialog.Root onOpenChange={() => changeModalState(!open)} open={open}>
       {withTrigger && (
-        <Dialog.Trigger className={c.trigger}>
+        <Dialog.Trigger className={c.trigger + ` ${className ? className : ''}`}>
           {customTrigger ? (
             customTrigger
           ) : (
-            <Button as={'span'} variant={'primary'}>
+            <Button as={'span'} className={className ? className : ''} variant={'primary'}>
               <Typography variant={'h3'}>{title}</Typography>
             </Button>
           )}

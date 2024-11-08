@@ -48,7 +48,7 @@ export type CreateDeckArgs = {
   name: string
 }
 
-type Card = {
+export type Card = {
   answer: string
   answerImg: string
   answerVideo: string
@@ -78,4 +78,12 @@ export type DeckResponse = {
   name: string
   updated: string
   userId: string
+}
+
+export type CardArgs = {
+  answer: string
+  answerImg: File | null
+  id: string
+  question: string
+  questionImg: File | null
 }

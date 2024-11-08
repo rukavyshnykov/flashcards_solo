@@ -10,7 +10,7 @@ export const Dropdown = ({ children, trigger }: DropdownProps) => {
   const [state, setState] = useState(false)
 
   return (
-    <DropdownMenu.Root open={state}>
+    <DropdownMenu.Root onOpenChange={setState} open={state}>
       <DropdownMenu.Trigger className={c.trigger} onClick={() => setState(true)}>
         {trigger ?? <Icon height={24} iconId={'dropdown'} width={24} />}
       </DropdownMenu.Trigger>
@@ -19,10 +19,10 @@ export const Dropdown = ({ children, trigger }: DropdownProps) => {
           align={'end'}
           alignOffset={-11}
           className={c.content}
-          onClick={() => setState(false)}
+          // onClick={() => setState(false)}
+          // onInteractOutside={() => setState(false)}
           side={'bottom'}
           sideOffset={2}
-          onInteractOutside={() => setState(false)}
         >
           {children}
           <DropdownMenu.Arrow className={c.arrow1} height={8} width={16} />
